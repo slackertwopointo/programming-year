@@ -1,0 +1,119 @@
+CalcButton[] numButton = new CalcButton[10];
+CalcButton[] opButton= new CalcButton[4];
+//CalcButton[] spButtons = new CalcButton[1];
+String displayValue = "0";
+String valueToCompute = "";
+String valueToCompute2 = "";
+float valueToComputeI = 0;
+float valueToComputeI2 = 0;
+float result = 0;
+char opValue;
+boolean firstNum;
+
+void setup() {
+  size(550, 945);
+  background(0, 255, 0);
+  noFill();
+  strokeWeight(0);
+  stroke(200);
+  numButton[0] = new CalcButton(100, 290).asNumber(0, 35, 35);
+  numButton[1] = new CalcButton(150, 263).asNumber(1, 35, 35);
+  numButton[2] = new CalcButton(200, 263).asNumber(2, 35, 35);
+  numButton[3] = new CalcButton(300, 263).asNumber(3, 35, 35);
+  numButton[4] = new CalcButton(400, 263).asNumber(4, 35, 35);
+  numButton[5] = new CalcButton(250, 263).asNumber(5, 35, 35);
+  numButton[6] = new CalcButton(350, 263).asNumber(6, 35, 35);
+  numButton[7] = new CalcButton(450, 263).asNumber(7, 35, 35);
+  numButton[8] = new CalcButton(150, 130).asNumber(8, 35, 35);
+  numButton[9] = new CalcButton(150, 263).asNumber(9, 35, 35);
+  opButton[0] = new CalcButton( 175, 275).asOperator("+");
+  opButton[1] = new CalcButton( 175, 220).asOperator("-");
+  opButton[3] = new CalcButton( 175, 220).asOperator("*");
+  opButton[4] = new CalcButton( 175, 220).asOperator("/");
+  
+  firstNum = true;
+}
+
+void draw() {
+  background(350, 0, 0);
+  for (int i=0; i<numButton.length; i++) {
+    numButton[i].display();
+    numButton[i].click(mouseX, mouseY);
+  }
+  updateDisplay();
+}
+
+void mousePressed() {
+  for (int i=0; i<numButton.length; i++) {
+    CalcButton inumButton = numButton[i];
+    numButton[i].click(mouseX, mouseY);
+    if (numButton[i].overBox) {
+      if (firstNum) {
+        println(i+ " " + numButton[i].numVal);
+        valueToCompute += int(numButton[i].numVal);
+        displayValue = valueToCompute;
+      } else {
+        valueToCompute2 += int(numButton[i].numVal);
+        displayValue = valueToCompute2;
+      }
+    }
+  }
+for (int i=0; i<opButton.length; i++) {
+    opButton[i].clickButton(mouseX,mouseY);
+    if (opButton[i].overBox) { 
+      if (opButton[i].opVal == "C") {
+        displayValue = "0";
+        opValue = 'C';
+        valueToCompute = "";
+        valueToCompute2 = "";
+        valueToComputeI = 0;
+        valueToComputeI = 0;
+        result = 0;
+        firstNum = true;
+      } else if (opButtons[i].opButtonValue == "=") {
+        // Perform calculation
+        firstNum = true;
+        performCalculation();
+      } else if (opButtons[i].opButtonValue == "+") {
+        if (result != 0) {
+          opValue = '+';
+          valueToCompute2 = "";
+          firstNum = false;
+          displayValue = "+";
+        } else {
+          opValue = '+';
+          firstNum = false;
+          displayValue = "+";
+        }
+      }
+    }
+  }
+}
+  void performCalc () {
+    //set string values to intergers
+    valueToComputeI = float (valueToCompute);
+    valueToComputeI2 = float(valutToCompute2);
+    
+    
+    
+    if (opValue == '+') {
+    result = valueToComputeI + valueToComputeI2;
+    displayValue = str(result);
+  } 
+  // let = work multiple times
+  if (firstNum) {
+    valueToCompute = displayValue;
+  } else {
+    valueToCompute = displayValue;
+    valueToCompute2 = "";
+  }
+}
+
+
+  void updateDisplay() {
+    fill(0, 0, 250);
+    rect(120, 10, 310, 65, 15);
+    fill(0, 250, 0);
+    textSize(25);
+    text(displayValue, 20, 37);
+  }
